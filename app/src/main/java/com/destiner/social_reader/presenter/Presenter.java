@@ -1,6 +1,8 @@
 package com.destiner.social_reader.presenter;
 
-public interface Presenter<T> {
+import com.destiner.social_reader.view.View;
+
+public interface Presenter<T extends View> {
 
     void attachView(T view);
 
