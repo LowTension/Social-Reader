@@ -1,14 +1,21 @@
 package com.destiner.social_reader.view.article_list;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.destiner.social_reader.R;
 import com.destiner.social_reader.model.structs.Post;
 import com.destiner.social_reader.presenter.article_list.ArticleListPresenter;
+import com.vk.sdk.VKAccessToken;
+import com.vk.sdk.VKCallback;
+import com.vk.sdk.VKScope;
+import com.vk.sdk.VKSdk;
+import com.vk.sdk.api.VKError;
 
 import java.util.ArrayList;
 
@@ -17,6 +24,10 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     ArticleListAdapter adapter;
 
     ArticleListPresenter presenter;
+
+    final String[] scope = {VKScope.FRIENDS, VKScope.WALL};
+
+    private final String TAG = "ArticleListActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +41,8 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
 
         presenter = new ArticleListPresenter();
         presenter.attachView(this);
+
+        VKSdk.login(this, scope);
     }
 
     @Override
@@ -42,4 +55,23 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     public Context getContext() {
         return this;
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (!VKSdk.onActivityResult(requestCode, resultCode, data, loginCallback)) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private VKCallback<VKAccessToken> loginCallback = new VKCallback<VKAccessToken>() {
+        @Override
+        public void onResult(VKAccessToken res) {
+            presenter.loadArticles(10, 0);
+        }
+
+        @Override
+        public void onError(VKError error) {
+            Log.i(TAG, error.toString());
+        }
+    };
 }
