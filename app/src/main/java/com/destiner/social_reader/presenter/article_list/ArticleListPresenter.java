@@ -32,5 +32,6 @@ public class ArticleListPresenter implements Presenter<ArticleListView>, OnArtic
 
     @Override
     public void onLoad(List<Post> posts) {
+        view.showArticles(posts);
     }
 }
