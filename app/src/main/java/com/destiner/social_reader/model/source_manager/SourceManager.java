@@ -2,6 +2,7 @@ package com.destiner.social_reader.model.source_manager;
 
 import android.content.ContextWrapper;
 
+import com.destiner.social_reader.R;
 import com.destiner.social_reader.model.cache.OnOffsetArticlesLoadListener;
 import com.destiner.social_reader.model.structs.source.GroupSource;
 import com.destiner.social_reader.model.structs.source.Source;
@@ -25,6 +26,7 @@ public class SourceManager {
 
     public static void setContextWrapper(ContextWrapper cw) {
         contextWrapper = cw;
+        addSourcesFromResources();
     }
 
     /**
@@ -37,6 +39,17 @@ public class SourceManager {
         DateTime endTime = getEarliestPostDate(groupSources);
         DateTime startTime = new DateTime(0);
         requestPosts(groupSourceIds, startTime, endTime, callback);
+    }
+
+    private static void addSourcesFromResources() {
+        if (contextWrapper == null) {
+            return;
+        }
+        // Add sources
+        int[] groupIds = contextWrapper.getResources().getIntArray(R.array.group_sources);
+        for (Integer groupId : groupIds) {
+            sources.add(new GroupSource(groupId));
+        }
     }
 
     /**

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="group_sources">
+        <item>43879004</item>
+        <item>26740020</item>
+    </integer-array>
+</resources>
