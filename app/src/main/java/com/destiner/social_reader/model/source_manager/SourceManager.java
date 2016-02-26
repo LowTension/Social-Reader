@@ -1,7 +1,9 @@
 package com.destiner.social_reader.model.source_manager;
 
-import com.destiner.social_reader.model.structs.source.GroupSource;
+import android.content.ContextWrapper;
+
 import com.destiner.social_reader.model.cache.OnOffsetArticlesLoadListener;
+import com.destiner.social_reader.model.structs.source.GroupSource;
 import com.destiner.social_reader.model.structs.source.Source;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
@@ -15,14 +17,14 @@ import java.util.Set;
  * Handles all work with sources: loads posts through API, updates source states.
  */
 public class SourceManager {
+    private static ContextWrapper contextWrapper;
     private static Set<Source> sources = new HashSet<>();
 
-    static {
-        sources.add(new GroupSource(43879004));
-        sources.add(new GroupSource(26740020));
+    private SourceManager() {
     }
 
-    private SourceManager() {
+    public static void setContextWrapper(ContextWrapper cw) {
+        contextWrapper = cw;
     }
 
     /**
