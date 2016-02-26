@@ -43,6 +43,7 @@ gen-external-apklibs
 # Project Directory
 /.idea/workspace.xml
 /.idea/libraries
+/.idea/dictionaries
 
 ### Other
 .DS_Store
