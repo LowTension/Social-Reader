@@ -18,6 +18,7 @@ import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ArticleListActivity extends AppCompatActivity implements ArticleListView {
     RecyclerView articleListRecyclerView;
@@ -54,6 +55,13 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     @Override
     public Context getContext() {
         return this;
+    }
+
+    @Override
+    public void showArticles(List<Post> articles) {
+        for (Post article : articles) {
+            adapter.add(article);
+        }
     }
 
     @Override
