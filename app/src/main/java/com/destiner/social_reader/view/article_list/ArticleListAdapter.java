@@ -22,12 +22,18 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
     /**
      * Custom ViewHolder
      */
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView articleTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             articleTextView = (TextView) itemView.findViewById(R.id.article_text);
+        }
+
+        @Override
+        public void onClick(View v) {
+            view.showArticle(dataSet.get(getAdapterPosition()));
         }
     }
 
