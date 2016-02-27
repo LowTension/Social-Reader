@@ -15,6 +15,8 @@ import java.util.List;
  * Adapter for article list
  */
 public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.ViewHolder> {
+    private ArticleListView view;
+
     private List<Post> dataSet;
 
     /**
@@ -29,7 +31,8 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         }
     }
 
-    public ArticleListAdapter(List<Post> posts) {
+    public ArticleListAdapter(ArticleListView view, List<Post> posts) {
+        this.view = view;
         dataSet = posts;
     }
 

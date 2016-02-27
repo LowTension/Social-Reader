@@ -38,7 +38,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
 
         articleListRecyclerView = (RecyclerView) findViewById(R.id.article_list_recycler_view);
         articleListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ArticleListAdapter(new ArrayList<Post>());
+        adapter = new ArticleListAdapter(this, new ArrayList<Post>());
         articleListRecyclerView.setAdapter(adapter);
 
         presenter = new ArticleListPresenter();
@@ -82,7 +82,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     private VKCallback<VKAccessToken> loginCallback = new VKCallback<VKAccessToken>() {
         @Override
         public void onResult(VKAccessToken res) {
-            presenter.loadArticles(10, 0);
+            presenter.loadArticles(100, 0);
         }
 
         @Override
