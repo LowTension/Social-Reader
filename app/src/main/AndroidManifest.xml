@@ -19,6 +19,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".view.article.ArticleActivity">
+        </activity>
+
         <activity android:name="com.vk.sdk.VKServiceActivity"
             android:label="ServiceActivity"
             android:theme="@style/VK.Transparent" />
