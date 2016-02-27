@@ -6,5 +6,6 @@ import com.destiner.social_reader.view.View;
 import java.util.List;
 
 public interface ArticleListView extends View {
+    void showArticle(Post article);
     void showArticles(List<Post> articles);
 }

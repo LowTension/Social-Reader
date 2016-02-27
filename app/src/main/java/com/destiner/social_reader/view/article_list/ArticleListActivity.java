@@ -11,6 +11,7 @@ import android.util.Log;
 import com.destiner.social_reader.R;
 import com.destiner.social_reader.model.structs.Post;
 import com.destiner.social_reader.presenter.article_list.ArticleListPresenter;
+import com.destiner.social_reader.view.article.ArticleActivity;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKScope;
@@ -55,6 +56,13 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     @Override
     public Context getContext() {
         return this;
+    }
+
+    @Override
+    public void showArticle(Post article) {
+        Intent intent = new Intent(this, ArticleActivity.class);
+        intent.putExtra("article", article);
+        startActivity(intent);
     }
 
     @Override
