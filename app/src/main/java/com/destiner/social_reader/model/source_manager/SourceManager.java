@@ -24,7 +24,7 @@ public class SourceManager {
     private SourceManager() {
     }
 
-    public static void setContextWrapper(Context c) {
+    public static void setContext(Context c) {
         context = c;
         addSourcesFromResources();
     }

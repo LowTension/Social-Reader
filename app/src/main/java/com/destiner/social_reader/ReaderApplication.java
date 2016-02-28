@@ -2,6 +2,7 @@ package com.destiner.social_reader;
 
 import android.app.Application;
 
+import com.destiner.social_reader.model.filter.FilterManager;
 import com.destiner.social_reader.model.source_manager.SourceManager;
 import com.vk.sdk.VKSdk;
 
@@ -13,7 +14,7 @@ public class ReaderApplication extends Application {
     public void onCreate() {
         super.onCreate();
         VKSdk.initialize(this);
-        // Set ContextWrapper to load sources in SourceManager
-        SourceManager.setContextWrapper(this);
+        // Set Context to load sources in SourceManager
+        SourceManager.setContext(this);
     }
 }
