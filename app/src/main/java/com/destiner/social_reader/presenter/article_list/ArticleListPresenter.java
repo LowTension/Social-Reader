@@ -2,7 +2,7 @@ package com.destiner.social_reader.presenter.article_list;
 
 
 import com.destiner.social_reader.model.cache.CacheManager;
-import com.destiner.social_reader.model.structs.Post;
+import com.destiner.social_reader.model.structs.Article;
 import com.destiner.social_reader.presenter.Presenter;
 import com.destiner.social_reader.view.article_list.ArticleListView;
 
@@ -13,8 +13,8 @@ public class ArticleListPresenter implements Presenter<ArticleListView>, OnArtic
 
     /**
      * Loads articles from cache. When ready, callback is fired.
-     * @param count count of posts required
-     * @param offset offset in post list
+     * @param count count of articles required
+     * @param offset offset in article list
      */
     public void loadArticles(int count, int offset) {
         CacheManager.getFromCache(count, offset, this);
@@ -31,7 +31,7 @@ public class ArticleListPresenter implements Presenter<ArticleListView>, OnArtic
     }
 
     @Override
-    public void onLoad(List<Post> posts) {
-        view.showArticles(posts);
+    public void onLoad(List<Article> articles) {
+        view.showArticles(articles);
     }
 }

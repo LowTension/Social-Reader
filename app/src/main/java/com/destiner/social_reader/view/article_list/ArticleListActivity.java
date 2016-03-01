@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.destiner.social_reader.R;
-import com.destiner.social_reader.model.structs.Post;
+import com.destiner.social_reader.model.structs.Article;
 import com.destiner.social_reader.presenter.article_list.ArticleListPresenter;
 import com.destiner.social_reader.view.article.ArticleActivity;
 import com.vk.sdk.VKAccessToken;
@@ -38,7 +38,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
 
         articleListRecyclerView = (RecyclerView) findViewById(R.id.article_list_recycler_view);
         articleListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ArticleListAdapter(this, new ArrayList<Post>());
+        adapter = new ArticleListAdapter(this, new ArrayList<Article>());
         articleListRecyclerView.setAdapter(adapter);
 
         presenter = new ArticleListPresenter();
@@ -59,15 +59,15 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     }
 
     @Override
-    public void showArticle(Post article) {
+    public void showArticle(Article article) {
         Intent intent = new Intent(this, ArticleActivity.class);
         intent.putExtra("article", article);
         startActivity(intent);
     }
 
     @Override
-    public void showArticles(List<Post> articles) {
-        for (Post article : articles) {
+    public void showArticles(List<Article> articles) {
+        for (Article article : articles) {
             adapter.add(article);
         }
     }
@@ -82,7 +82,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     private VKCallback<VKAccessToken> loginCallback = new VKCallback<VKAccessToken>() {
         @Override
         public void onResult(VKAccessToken res) {
-            presenter.loadArticles(100, 0);
+            presenter.loadArticles(20, 0);
         }
 
         @Override

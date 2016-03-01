@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.destiner.social_reader.R;
-import com.destiner.social_reader.model.structs.Post;
+import com.destiner.social_reader.model.structs.Article;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
 public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.ViewHolder> {
     private ArticleListView view;
 
-    private List<Post> dataSet;
+    private List<Article> dataSet;
 
     /**
      * Custom ViewHolder
@@ -37,16 +37,16 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         }
     }
 
-    public ArticleListAdapter(ArticleListView view, List<Post> posts) {
+    public ArticleListAdapter(ArticleListView view, List<Article> articles) {
         this.view = view;
-        dataSet = posts;
+        dataSet = articles;
     }
 
     /**
      * Adds article to the data set and notifies RecyclerView
      * @param article article to be added
      */
-    public void add(Post article) {
+    public void add(Article article) {
         dataSet.add(article);
         notifyItemInserted(dataSet.size() - 1);
     }
@@ -60,7 +60,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Post article = dataSet.get(position);
+        Article article = dataSet.get(position);
         holder.articleTextView.setText(article.getText());
     }
 

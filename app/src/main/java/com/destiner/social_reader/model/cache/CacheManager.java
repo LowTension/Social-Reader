@@ -1,18 +1,18 @@
 package com.destiner.social_reader.model.cache;
 
 import com.destiner.social_reader.model.explorer.Explorer;
-import com.destiner.social_reader.model.structs.Post;
+import com.destiner.social_reader.model.structs.Article;
 import com.destiner.social_reader.presenter.article_list.OnArticlesLoadListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Keeps posts. Gives posts when requested. Loads new posts if request exceeds amount of posts
- * cached.
+ * Keeps articles. Gives articles when requested. Loads new articles if request exceeds amount of
+ * articles cached.
  */
 public class CacheManager {
-    private static List<Post> postCache = new ArrayList<>();
+    private static List<Article> articleCache = new ArrayList<>();
 
     /**
      * Private constructor to forbid class instantiation
@@ -21,19 +21,19 @@ public class CacheManager {
     }
 
     /**
-     * Retrieves posts from cache. If cache doesn't have specified elements, retrieves them from
-     * Explorer class. After all, forms the specified posts in sublist and fires callback.
+     * Retrieves articles from cache. If cache doesn't have specified elements, retrieves them from
+     * Explorer class. After all, forms the specified articles in sublist and fires callback.
      * @param count number of element
-     * @param offset offset in cache post list
-     * @param callback callback listener will fire when posts will be ready
+     * @param offset offset in cache article list
+     * @param callback callback listener will fire when articles will be ready
      */
     public static void getFromCache(int count, int offset, OnArticlesLoadListener callback) {
-        if (postCache.size() < count + offset) {
+        if (articleCache.size() < count + offset) {
             OnOffsetArticlesLoadListener listener = getListener(count, offset, callback);
-            loadToCache(count + offset - postCache.size(), listener);
+            loadToCache(count + offset - articleCache.size(), listener);
         } else {
-            List<Post> requestedPosts = postCache.subList(offset, offset + count);
-            callback.onLoad(requestedPosts);
+            List<Article> requestedArticles = articleCache.subList(offset, offset + count);
+            callback.onLoad(requestedArticles);
         }
     }
 
@@ -47,21 +47,21 @@ public class CacheManager {
 
     /**
      * Form listener with specified parameters
-     * @param count count of posts required
-     * @param offset offset in post list
-     * @param callback callback listener will fire when posts will be ready
+     * @param count count of articles required
+     * @param offset offset in article list
+     * @param callback callback listener will fire when articles will be ready
      * @return created listener
      */
     private static OnOffsetArticlesLoadListener getListener(int count, int offset,
                                                             final OnArticlesLoadListener callback) {
         return new OnOffsetArticlesLoadListener(count, offset) {
             @Override
-            public void onLoad(List<Post> articles) {
-                postCache.addAll(articles);
+            public void onLoad(List<Article> articles) {
+                articleCache.addAll(articles);
                 int start = getOffset();
                 int end = getOffset() + getCount();
-                List<Post> requestedPosts = postCache.subList(start, end);
-                callback.onLoad(requestedPosts);
+                List<Article> requestedArticles = articleCache.subList(start, end);
+                callback.onLoad(requestedArticles);
             }
         };
     }

@@ -1,6 +1,6 @@
 package com.destiner.social_reader.model.cache;
 
-import com.destiner.social_reader.model.structs.Post;
+import com.destiner.social_reader.model.structs.Article;
 import com.destiner.social_reader.presenter.article_list.OnArticlesLoadListener;
 
 import java.util.List;
@@ -26,5 +26,5 @@ public abstract class OnOffsetArticlesLoadListener implements OnArticlesLoadList
     }
 
     @Override
-    public abstract void onLoad(List<Post> articles);
+    public abstract void onLoad(List<Article> articles);
 }
