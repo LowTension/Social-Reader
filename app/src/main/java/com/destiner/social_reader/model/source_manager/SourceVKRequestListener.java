@@ -2,6 +2,7 @@ package com.destiner.social_reader.model.source_manager;
 
 import android.util.Log;
 
+import com.destiner.social_reader.model.filter.FilterManager;
 import com.destiner.social_reader.model.structs.Post;
 import com.destiner.social_reader.model.cache.OnOffsetArticlesLoadListener;
 import com.vk.sdk.api.VKError;
@@ -55,8 +56,7 @@ public class SourceVKRequestListener extends VKRequest.VKRequestListener {
             Post post = new Post(postText);
             posts.add(post);
         }
-        // Fire callback listener
-        listener.onLoad(posts);
+        FilterManager.filter(posts, listener);
     }
 
     @Override
