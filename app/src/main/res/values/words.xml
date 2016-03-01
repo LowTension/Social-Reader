@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="filthy_words_ru">
+        <item>сука</item>
+        <item>мудак</item>
+        <item>блядь</item>
+        <item>хуй</item>
+        <item>пизда</item>
+        <item>пиздюк</item>
+        <item>ебать</item>
+    </string-array>
+</resources>
