@@ -16,5 +16,7 @@ public class ReaderApplication extends Application {
         VKSdk.initialize(this);
         // Set Context to load sources in SourceManager
         SourceManager.setContext(this);
+        // Set Context to load filter parameters in FilterManager
+        FilterManager.setContext(this);
     }
 }
