@@ -1,9 +1,6 @@
 package com.destiner.social_reader.model.cache;
 
-import com.destiner.social_reader.model.structs.Article;
 import com.destiner.social_reader.presenter.article_list.OnArticlesLoadListener;
-
-import java.util.List;
 
 /**
  * Keeps count of articles and the offset in list.
@@ -24,7 +21,4 @@ public abstract class OnOffsetArticlesLoadListener implements OnArticlesLoadList
     public int getOffset() {
         return offset;
     }
-
-    @Override
-    public abstract void onLoad(List<Article> articles);
 }
