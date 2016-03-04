@@ -17,4 +17,8 @@ public abstract class Source {
     public DateTime getFirstPostTime() {
         return firstPostTime;
     }
+
+    public void setFirstPostTime(DateTime firstPostTime) {
+        this.firstPostTime = firstPostTime;
+    }
 }
