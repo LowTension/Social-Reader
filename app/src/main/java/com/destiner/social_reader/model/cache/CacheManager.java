@@ -1,10 +1,11 @@
 package com.destiner.social_reader.model.cache;
 
+import android.content.Context;
+
 import com.destiner.social_reader.model.explorer.Explorer;
 import com.destiner.social_reader.model.structs.Article;
 import com.destiner.social_reader.presenter.article_list.OnArticlesLoadListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,7 +13,9 @@ import java.util.List;
  * articles cached.
  */
 public class CacheManager {
-    private static List<Article> articleCache = new ArrayList<>();
+    private static Context context;
+
+    private static ArticleOpenHelper databaseHelper;
 
     /**
      * Private constructor to forbid class instantiation
@@ -28,13 +31,26 @@ public class CacheManager {
      * @param callback callback listener will fire when articles will be ready
      */
     public static void getFromCache(int count, int offset, OnArticlesLoadListener callback) {
-        if (articleCache.size() < count + offset) {
+        if (databaseHelper.getCount() < count + offset) {
             OnOffsetArticlesLoadListener listener = getListener(count, offset, callback);
-            loadToCache(count + offset - articleCache.size(), listener);
+            loadToCache(count + offset - databaseHelper.getCount(), listener);
         } else {
-            List<Article> requestedArticles = articleCache.subList(offset, offset + count);
+            List<Article> requestedArticles = databaseHelper.get(count, offset);
             callback.onLoad(requestedArticles);
         }
+    }
+
+    public static void setContext(Context c) {
+        context = c;
+        databaseHelper = new ArticleOpenHelper(context);
+    }
+
+    /**
+     * Deletes article from cache.
+     * @param article article to be deleted
+     */
+    public static void deleteArticle(Article article) {
+        databaseHelper.delete(article);
     }
 
     /**
@@ -57,10 +73,8 @@ public class CacheManager {
         return new OnOffsetArticlesLoadListener(count, offset) {
             @Override
             public void onLoad(List<Article> articles) {
-                articleCache.addAll(articles);
-                int start = getOffset();
-                int end = getOffset() + getCount();
-                List<Article> requestedArticles = articleCache.subList(start, end);
+                databaseHelper.addAll(articles);
+                List<Article> requestedArticles = databaseHelper.get(getCount(), getOffset());
                 callback.onLoad(requestedArticles);
             }
         };

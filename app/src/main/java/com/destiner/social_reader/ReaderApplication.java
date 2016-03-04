@@ -2,6 +2,7 @@ package com.destiner.social_reader;
 
 import android.app.Application;
 
+import com.destiner.social_reader.model.cache.CacheManager;
 import com.destiner.social_reader.model.filter.FilterManager;
 import com.destiner.social_reader.model.source_manager.SourceManager;
 import com.vk.sdk.VKSdk;
@@ -18,5 +19,7 @@ public class ReaderApplication extends Application {
         SourceManager.setContext(this);
         // Set Context to load filter parameters in FilterManager
         FilterManager.setContext(this);
+        // Set Context to start-up SQLite in CacheManager
+        CacheManager.setContext(this);
     }
 }
