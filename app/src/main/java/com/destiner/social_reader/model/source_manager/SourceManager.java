@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.destiner.social_reader.R;
 import com.destiner.social_reader.model.cache.OnOffsetArticlesLoadListener;
+import com.destiner.social_reader.model.filter.FilterManager;
+import com.destiner.social_reader.model.structs.Post;
 import com.destiner.social_reader.model.structs.source.GroupSource;
 import com.destiner.social_reader.model.structs.source.Source;
 import com.vk.sdk.api.VKParameters;
@@ -12,6 +14,7 @@ import com.vk.sdk.api.VKRequest;
 import org.joda.time.DateTime;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -38,7 +41,8 @@ public class SourceManager {
         Set<Integer> groupSourceIds = getGroupSourceIds(groupSources);
         DateTime endTime = getEarliestPostDate(groupSources);
         DateTime startTime = new DateTime(0);
-        requestPosts(groupSourceIds, startTime, endTime, callback);
+        OnPostsLoadListener listener = buildListener(groupSources, callback);
+        requestPosts(groupSourceIds, startTime, endTime, listener);
     }
 
     private static void addSourcesFromResources() {
@@ -104,7 +108,7 @@ public class SourceManager {
      * @param callback callback listener that will fire when request will complete
      */
     private static void requestPosts(Set<Integer> sourceIds, DateTime startTime, DateTime endTime,
-                              OnOffsetArticlesLoadListener callback) {
+                              OnPostsLoadListener callback) {
         String sourceIdsString = sourceIds.toString();
         VKParameters parameters = VKParameters.from(
                 "filters", "post",
@@ -115,5 +119,34 @@ public class SourceManager {
                 );
         VKRequest request = new VKRequest("newsfeed.get", parameters);
         request.executeWithListener(new SourceVKRequestListener(callback));
+    }
+
+    /**
+     * Builds OnPostsLoadListener instance with method implementation
+     * @param sources queried sources
+     * @param callback callback listener
+     * @return created instance
+     */
+    private static OnPostsLoadListener buildListener(Set<? extends Source> sources,
+                                                     OnOffsetArticlesLoadListener callback) {
+        return new OnPostsLoadListener(sources, callback) {
+            @Override
+            public void onPostsLoad(List<Post> posts, DateTime earliestPostDate) {
+                Set<? extends Source> sourceSet = getSources();
+                updateSources(sourceSet, earliestPostDate);
+                FilterManager.filter(posts, this);
+            }
+        };
+    }
+
+    /**
+     * Updates information about sources
+     * @param sources queried sources
+     * @param earliestPostDate new earliest post date
+     */
+    private static void updateSources(Set<? extends Source> sources, DateTime earliestPostDate) {
+        for (Source source : sources) {
+            source.setFirstPostTime(earliestPostDate);
+        }
     }
 }

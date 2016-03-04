@@ -2,13 +2,12 @@ package com.destiner.social_reader.model.source_manager;
 
 import android.util.Log;
 
-import com.destiner.social_reader.model.filter.FilterManager;
 import com.destiner.social_reader.model.structs.Post;
-import com.destiner.social_reader.model.cache.OnOffsetArticlesLoadListener;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -20,11 +19,11 @@ import java.util.List;
  * This callback fires when request is complete.
  */
 public class SourceVKRequestListener extends VKRequest.VKRequestListener {
-    OnOffsetArticlesLoadListener listener;
+    OnPostsLoadListener listener;
 
     private static String TAG = "SourceVKRequestListener";
 
-    public SourceVKRequestListener(OnOffsetArticlesLoadListener callback) {
+    public SourceVKRequestListener(OnPostsLoadListener callback) {
         listener = callback;
     }
 
@@ -56,7 +55,15 @@ public class SourceVKRequestListener extends VKRequest.VKRequestListener {
             Post post = new Post(postText);
             posts.add(post);
         }
-        FilterManager.filter(posts, listener);
+        // Get earliest post date
+        int earliestPostMillis;
+        try {
+            earliestPostMillis = postArray.getJSONObject(postArray.length() - 1).getInt("date");
+        } catch (JSONException e) {
+            earliestPostMillis = 0;
+        }
+        DateTime earliestPostDate = new DateTime(earliestPostMillis);
+        listener.onPostsLoad(posts, earliestPostDate);
     }
 
     @Override
