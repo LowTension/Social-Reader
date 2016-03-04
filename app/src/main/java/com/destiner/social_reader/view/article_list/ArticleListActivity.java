@@ -47,7 +47,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
         if (VKAccessToken.currentToken() == null || VKAccessToken.currentToken().isExpired()) {
             VKSdk.login(this, scope);
         } else {
-            presenter.loadArticles(20, 0);
+            loadContent();
         }
     }
 
@@ -86,7 +86,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     private VKCallback<VKAccessToken> loginCallback = new VKCallback<VKAccessToken>() {
         @Override
         public void onResult(VKAccessToken res) {
-            presenter.loadArticles(20, 0);
+            loadContent();
         }
 
         @Override
@@ -94,4 +94,8 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
             Log.i(TAG, error.toString());
         }
     };
+
+    private void loadContent() {
+        presenter.loadArticles(20, 0);
+    }
 }
