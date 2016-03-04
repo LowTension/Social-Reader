@@ -44,7 +44,11 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
         presenter = new ArticleListPresenter();
         presenter.attachView(this);
 
-        VKSdk.login(this, scope);
+        if (VKAccessToken.currentToken() == null || VKAccessToken.currentToken().isExpired()) {
+            VKSdk.login(this, scope);
+        } else {
+            presenter.loadArticles(20, 0);
+        }
     }
 
     @Override
