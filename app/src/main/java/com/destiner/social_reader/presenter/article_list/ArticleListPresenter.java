@@ -20,6 +20,14 @@ public class ArticleListPresenter implements Presenter<ArticleListView>, OnArtic
         CacheManager.getFromCache(count, offset, this);
     }
 
+    /**
+     * Removes article form cache.
+     * @param article article to remove
+     */
+    public void deleteArticle(Article article) {
+        CacheManager.deleteArticle(article);
+    }
+
     @Override
     public void attachView(ArticleListView view) {
         this.view = view;
