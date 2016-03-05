@@ -77,7 +77,8 @@ public class SourceManager {
      * @return earliest post date
      */
     private static DateTime getEarliestPostDate(Set<? extends Source> sources) {
-        long earliestPostMillis = Integer.MAX_VALUE;
+        long maxUnixTime = Integer.MAX_VALUE;
+        long earliestPostMillis = maxUnixTime * 1000;
         for (Source source : sources) {
             long firstPostMillis = source.getFirstPostTime().getMillis();
             if (firstPostMillis < earliestPostMillis) {
@@ -114,8 +115,8 @@ public class SourceManager {
                 "filters", "post",
                 "source_ids", sourceIdsString,
                 "count", 100,
-                "start_time", startTime.getMillis(),
-                "end_time", endTime.getMillis()
+                "start_time", startTime.getMillis() / 1000,
+                "end_time", endTime.getMillis() / 1000
                 );
         VKRequest request = new VKRequest("newsfeed.get", parameters);
         request.executeWithListener(new SourceVKRequestListener(callback));

@@ -56,13 +56,13 @@ public class SourceVKRequestListener extends VKRequest.VKRequestListener {
             posts.add(post);
         }
         // Get earliest post date
-        int earliestPostMillis;
+        int earliestPostSeconds;
         try {
-            earliestPostMillis = postArray.getJSONObject(postArray.length() - 1).getInt("date");
+            earliestPostSeconds = postArray.getJSONObject(postArray.length() - 1).getInt("date");
         } catch (JSONException e) {
-            earliestPostMillis = 0;
+            earliestPostSeconds = 0;
         }
-        DateTime earliestPostDate = new DateTime(earliestPostMillis);
+        DateTime earliestPostDate = new DateTime((long) earliestPostSeconds * 1000);
         listener.onPostsLoad(posts, earliestPostDate);
     }
 
