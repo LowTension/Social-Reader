@@ -51,6 +51,24 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         notifyItemInserted(dataSet.size() - 1);
     }
 
+    /**
+     * Removes element from list.
+     * @param position position of element
+     */
+    public void remove(int position) {
+        dataSet.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    /**
+     * Retrieves element from data set.
+     * @param position position of element
+     * @return retrieved element
+     */
+    public Article get(int position) {
+        return dataSet.get(position);
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
