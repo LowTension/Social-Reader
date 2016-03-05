@@ -85,10 +85,9 @@ public class ArticleOpenHelper extends SQLiteOpenHelper {
     public List<Article> get(int count, int offset) {
         SQLiteDatabase db = getReadableDatabase();
         String queryText =
-                String.format("SELECT %s FROM %s ORDER BY %s LIMIT %d OFFSET %d;",
+                String.format("SELECT %s FROM %s LIMIT %d OFFSET %d;",
                         KEY_TEXT,
                         TABLE_NAME,
-                        KEY_TEXT,
                         count,
                         offset);
         Cursor cursor = db.rawQuery(queryText, null);
