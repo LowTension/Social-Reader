@@ -40,6 +40,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
         articleListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ArticleListAdapter(this, new ArrayList<Article>());
         articleListRecyclerView.setAdapter(adapter);
+        articleListRecyclerView.addOnItemTouchListener(getSwipeableTouchListener());
 
         presenter = new ArticleListPresenter();
         presenter.attachView(this);
@@ -97,5 +98,38 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
 
     private void loadContent() {
         presenter.loadArticles(20, 0);
+    }
+
+    private SwipeableRecyclerViewTouchListener getSwipeableTouchListener() {
+        return new SwipeableRecyclerViewTouchListener(articleListRecyclerView, getSwipeListener());
+    }
+
+    private SwipeableRecyclerViewTouchListener.SwipeListener getSwipeListener() {
+        return new SwipeableRecyclerViewTouchListener.SwipeListener() {
+            @Override
+            public boolean canSwipeLeft(int position) {
+                return true;
+            }
+
+            @Override
+            public boolean canSwipeRight(int position) {
+                return false;
+            }
+
+            @Override
+            public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] positions) {
+                for (int position : positions) {
+                    Article article = adapter.get(position);
+                    // Delete article from storage
+                    presenter.deleteArticle(article);
+                    // Delete article from RecyclerView
+                    adapter.remove(position);
+                }
+            }
+
+            @Override
+            public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] positions) {
+            }
+        };
     }
 }
