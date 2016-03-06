@@ -23,7 +23,7 @@ public class ArticleOpenHelper extends SQLiteOpenHelper {
     private static final String PREFERENCES_NAME = "article_database_info";
     private static final String PREFERENCES_KEY_ID = "id";
     // Table constants
-    private static final String TABLE_NAME = "events";
+    private static final String TABLE_NAME = "articles";
     private static final int TABLE_VERSION = 1;
 
     // Key constants
