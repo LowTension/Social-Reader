@@ -22,4 +22,6 @@ public abstract class Source {
     public void setFirstPostTime(DateTime firstPostTime) {
         this.firstPostTime = firstPostTime;
     }
+
+    public abstract String getStringId();
 }

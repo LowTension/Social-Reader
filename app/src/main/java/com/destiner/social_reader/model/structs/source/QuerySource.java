@@ -14,4 +14,9 @@ public class QuerySource extends Source {
     public String getQuery() {
         return query;
     }
+
+    @Override
+    public String getStringId() {
+        return query;
+    }
 }

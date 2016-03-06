@@ -13,4 +13,9 @@ public class GroupSource extends Source {
     public int getId() {
         return id;
     }
+
+    @Override
+    public String getStringId() {
+        return Integer.toString(-id);
+    }
 }
