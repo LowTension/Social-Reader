@@ -29,7 +29,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
 
     final String[] scope = {VKScope.FRIENDS, VKScope.WALL};
 
-    private final String TAG = "ArticleListActivity";
+    private static final String TAG = "ArticleListActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

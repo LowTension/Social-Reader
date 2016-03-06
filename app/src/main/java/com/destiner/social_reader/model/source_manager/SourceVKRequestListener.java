@@ -21,7 +21,7 @@ import java.util.List;
 public class SourceVKRequestListener extends VKRequest.VKRequestListener {
     OnPostsLoadListener listener;
 
-    private static String TAG = "SourceVKRequestListener";
+    private static final String TAG = "SourceVKRequestListener";
 
     public SourceVKRequestListener(OnPostsLoadListener callback) {
         listener = callback;
