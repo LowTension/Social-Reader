@@ -23,6 +23,7 @@ import java.util.Set;
 public class SourceManager {
     private static Context context;
     private static Set<Source> sources = new HashSet<>();
+    private static SourceDBOpenHelper databaseHelper;
 
     private SourceManager() {
     }
@@ -30,6 +31,7 @@ public class SourceManager {
     public static void setContext(Context c) {
         context = c;
         addSourcesFromResources();
+        databaseHelper = new SourceDBOpenHelper(context);
     }
 
     /**
@@ -80,7 +82,7 @@ public class SourceManager {
         long maxUnixTime = Integer.MAX_VALUE;
         long earliestPostMillis = maxUnixTime * 1000;
         for (Source source : sources) {
-            long firstPostMillis = source.getFirstPostTime().getMillis();
+            long firstPostMillis = databaseHelper.getDate(source);
             if (firstPostMillis < earliestPostMillis) {
                 earliestPostMillis = firstPostMillis;
             }
@@ -147,7 +149,7 @@ public class SourceManager {
      */
     private static void updateSources(Set<? extends Source> sources, DateTime earliestPostDate) {
         for (Source source : sources) {
-            source.setFirstPostTime(earliestPostDate);
+            databaseHelper.insert(source, earliestPostDate);
         }
     }
 }
