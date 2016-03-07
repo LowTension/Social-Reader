@@ -1,4 +1,4 @@
-package com.destiner.social_reader.model.cache;
+package com.destiner.social_reader.model.structs.listeners.articles_load;
 
 import com.destiner.social_reader.presenter.article_list.OnArticlesLoadListener;
 

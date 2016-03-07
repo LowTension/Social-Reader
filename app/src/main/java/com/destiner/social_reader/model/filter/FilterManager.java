@@ -2,7 +2,7 @@ package com.destiner.social_reader.model.filter;
 
 import android.content.Context;
 
-import com.destiner.social_reader.model.cache.OnArticleRequestListener;
+import com.destiner.social_reader.model.structs.listeners.articles_load.OnArticleRequestListener;
 import com.destiner.social_reader.model.structs.Article;
 import com.destiner.social_reader.model.structs.Post;
 

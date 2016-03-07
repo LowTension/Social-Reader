@@ -3,9 +3,9 @@ package com.destiner.social_reader.model.source_manager;
 import android.content.Context;
 
 import com.destiner.social_reader.R;
-import com.destiner.social_reader.model.cache.OnArticleRequestListener;
 import com.destiner.social_reader.model.filter.FilterManager;
 import com.destiner.social_reader.model.structs.Post;
+import com.destiner.social_reader.model.structs.listeners.articles_load.OnArticleRequestListener;
 import com.destiner.social_reader.model.structs.source.GroupSource;
 import com.destiner.social_reader.model.structs.source.Source;
 import com.vk.sdk.api.VKParameters;

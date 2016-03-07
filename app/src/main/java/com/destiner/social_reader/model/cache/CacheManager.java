@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.destiner.social_reader.model.explorer.Explorer;
 import com.destiner.social_reader.model.structs.Article;
+import com.destiner.social_reader.model.structs.listeners.articles_load.OnArticleRequestListener;
 import com.destiner.social_reader.presenter.article_list.OnArticlesLoadListener;
 
 import java.util.List;

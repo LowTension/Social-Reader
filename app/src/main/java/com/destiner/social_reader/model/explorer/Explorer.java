@@ -1,6 +1,6 @@
 package com.destiner.social_reader.model.explorer;
 
-import com.destiner.social_reader.model.cache.OnArticleRequestListener;
+import com.destiner.social_reader.model.structs.listeners.articles_load.OnArticleRequestListener;
 import com.destiner.social_reader.model.source_manager.SourceManager;
 
 /**
