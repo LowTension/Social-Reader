@@ -3,7 +3,7 @@ package com.destiner.social_reader.model.source_manager;
 import android.content.Context;
 
 import com.destiner.social_reader.R;
-import com.destiner.social_reader.model.cache.OnOffsetArticlesLoadListener;
+import com.destiner.social_reader.model.cache.OnArticleRequestListener;
 import com.destiner.social_reader.model.filter.FilterManager;
 import com.destiner.social_reader.model.structs.Post;
 import com.destiner.social_reader.model.structs.source.GroupSource;
@@ -38,7 +38,7 @@ public class SourceManager {
      * Loads new (ones which wasn't get before) posts from group sources.
      * @param callback callback listener that should be fired when posts retrieval is complete.
      */
-    public static void getGroupPosts(OnOffsetArticlesLoadListener callback) {
+    public static void getGroupPosts(OnArticleRequestListener callback) {
         Set<GroupSource> groupSources = getGroupSources();
         Set<Integer> groupSourceIds = getGroupSourceIds(groupSources);
         DateTime endTime = getEarliestPostDate(groupSources);
@@ -131,7 +131,7 @@ public class SourceManager {
      * @return created instance
      */
     private static OnPostsLoadListener buildListener(Set<? extends Source> sources,
-                                                     OnOffsetArticlesLoadListener callback) {
+                                                     OnArticleRequestListener callback) {
         return new OnPostsLoadListener(sources, callback) {
             @Override
             public void onPostsLoad(List<Post> posts, DateTime earliestPostDate) {

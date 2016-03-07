@@ -32,7 +32,7 @@ public class CacheManager {
      */
     public static void getFromCache(int count, int offset, OnArticlesLoadListener callback) {
         if (databaseHelper.getCount() < count + offset) {
-            OnOffsetArticlesLoadListener listener = getListener(count, offset, callback);
+            OnArticleRequestListener listener = getListener(count, offset, callback);
             loadToCache(count + offset - databaseHelper.getCount(), listener);
         } else {
             List<Article> requestedArticles = databaseHelper.get(count, offset);
@@ -57,7 +57,7 @@ public class CacheManager {
      * Loads elements to store them in cache
      * @param length the minimal number of elements should be loaded
      */
-    private static void loadToCache(int length, OnOffsetArticlesLoadListener listener) {
+    private static void loadToCache(int length, OnArticleRequestListener listener) {
         Explorer.getNew(length, listener);
     }
 
@@ -68,9 +68,9 @@ public class CacheManager {
      * @param callback callback listener will fire when articles will be ready
      * @return created listener
      */
-    private static OnOffsetArticlesLoadListener getListener(int count, int offset,
+    private static OnArticleRequestListener getListener(int count, int offset,
                                                             final OnArticlesLoadListener callback) {
-        return new OnOffsetArticlesLoadListener(count, offset) {
+        return new OnArticleRequestListener(count, offset) {
             @Override
             public void onLoad(List<Article> articles) {
                 databaseHelper.addAll(articles);

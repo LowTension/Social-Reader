@@ -2,7 +2,7 @@ package com.destiner.social_reader.model.filter;
 
 import android.content.Context;
 
-import com.destiner.social_reader.model.cache.OnOffsetArticlesLoadListener;
+import com.destiner.social_reader.model.cache.OnArticleRequestListener;
 import com.destiner.social_reader.model.structs.Article;
 import com.destiner.social_reader.model.structs.Post;
 
@@ -23,7 +23,7 @@ public class FilterManager {
      * @param posts list of posts
      * @param callback callback listener
      */
-    public static void filter(List<Post> posts, OnOffsetArticlesLoadListener callback) {
+    public static void filter(List<Post> posts, OnArticleRequestListener callback) {
         // Applies filters
         for (Filter filter : filters) {
             posts = filter.filter(posts);
