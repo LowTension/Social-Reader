@@ -4,11 +4,14 @@ import android.content.Context;
 
 import com.destiner.social_reader.model.explorer.Explorer;
 import com.destiner.social_reader.model.structs.Article;
+import com.destiner.social_reader.model.structs.Bounds;
+import com.destiner.social_reader.model.structs.listeners.articles_load.ArticleRequest;
 import com.destiner.social_reader.model.structs.listeners.articles_load.Content;
 import com.destiner.social_reader.model.structs.listeners.articles_load.OnArticleRequestListener;
 import com.destiner.social_reader.model.structs.listeners.articles_load.RequestError;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,6 +22,8 @@ public class CacheManager {
     private static Context context;
 
     private static ArticleOpenHelper databaseHelper;
+
+    private static int last = -1;
 
     /**
      * Private constructor to forbid class instantiation
@@ -52,6 +57,7 @@ public class CacheManager {
      * @param article article to be deleted
      */
     public static void deleteArticle(Article article) {
+        last--;
         databaseHelper.delete(article);
     }
 
@@ -68,7 +74,7 @@ public class CacheManager {
             @Override
             public void onContentReady(Content content) {
                 databaseHelper.addAll(content.getArticles());
-                List<Article> requestedArticles = new ArrayList<>();
+                List<Article> requestedArticles = getArticles(callback.getRequest());
                 callback.onContentReady(new Content(requestedArticles));
             }
 
@@ -77,5 +83,46 @@ public class CacheManager {
                 callback.onError(error);
             }
         };
+    }
+
+    private static Bounds calculateBounds(ArticleRequest request) {
+        int count = request.getCount();
+        int offset = request.getOffset();
+        int upper;
+        int lower;
+        int size = databaseHelper.getCount();
+        if (last == -1) {
+            // Get top most; ignore offset
+            upper = size - 1;
+            lower = upper - count + 1;
+        } else {
+            // Start from last
+            lower = last + 1 - offset - count;
+            upper = lower + count - 1;
+        }
+        return new Bounds(upper, lower);
+    }
+
+    private static List<Article> getArticles(ArticleRequest request) {
+        Bounds bounds = calculateBounds(request);
+        int count;
+        int offset;
+        if (!bounds.isValid()) {
+            // If there is something available (but not everything that was requested)
+            if (bounds.getUpper() >= 0) {
+                count = bounds.getUpper() + 1;
+                offset = 0;
+            } else {
+                return new ArrayList<>();
+            }
+        } else {
+            // Cache has everything that was requested
+            count = bounds.getUpper() - bounds.getLower() + 1;
+            offset = bounds.getLower();
+        }
+        List<Article> articles = databaseHelper.get(count, offset);
+        Collections.reverse(articles);
+        last = Math.max(last, bounds.getUpper());
+        return articles;
     }
 }
