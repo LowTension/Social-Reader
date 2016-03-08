@@ -1,11 +1,9 @@
 package com.destiner.social_reader.model.structs.listeners.articles_load;
 
-import com.destiner.social_reader.presenter.article_list.OnArticlesLoadListener;
-
 /**
  * Keeps count of articles and the offset in list.
  */
-public abstract class OnArticleRequestListener implements OnArticlesLoadListener {
+public abstract class OnArticleRequestListener {
     private int count;
     private int offset;
 

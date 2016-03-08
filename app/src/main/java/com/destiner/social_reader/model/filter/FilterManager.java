@@ -33,8 +33,6 @@ public class FilterManager {
         for (Post filteredPost : posts) {
             articles.add(new Article(filteredPost.getText()));
         }
-        // Fires callback
-        callback.onLoad(articles);
     }
 
     public static void setContext(Context c) {

@@ -8,7 +8,7 @@ import com.destiner.social_reader.view.article_list.ArticleListView;
 
 import java.util.List;
 
-public class ArticleListPresenter implements Presenter<ArticleListView>, OnArticlesLoadListener {
+public class ArticleListPresenter implements Presenter<ArticleListView> {
     private ArticleListView view;
 
     /**
@@ -17,7 +17,7 @@ public class ArticleListPresenter implements Presenter<ArticleListView>, OnArtic
      * @param offset offset in article list
      */
     public void loadArticles(int count, int offset) {
-        CacheManager.getFromCache(count, offset, this);
+        CacheManager.getFromCache(count, offset);
     }
 
     /**
@@ -36,10 +36,5 @@ public class ArticleListPresenter implements Presenter<ArticleListView>, OnArtic
     @Override
     public void detachView() {
         this.view = null;
-    }
-
-    @Override
-    public void onLoad(List<Article> articles) {
-        view.showArticles(articles);
     }
 }

@@ -5,7 +5,6 @@ import android.content.Context;
 import com.destiner.social_reader.model.explorer.Explorer;
 import com.destiner.social_reader.model.structs.Article;
 import com.destiner.social_reader.model.structs.listeners.articles_load.OnArticleRequestListener;
-import com.destiner.social_reader.presenter.article_list.OnArticlesLoadListener;
 
 import java.util.List;
 
@@ -29,15 +28,13 @@ public class CacheManager {
      * Explorer class. After all, forms the specified articles in sublist and fires callback.
      * @param count number of element
      * @param offset offset in cache article list
-     * @param callback callback listener will fire when articles will be ready
      */
-    public static void getFromCache(int count, int offset, OnArticlesLoadListener callback) {
+    public static void getFromCache(int count, int offset) {
         if (databaseHelper.getCount() < count + offset) {
-            OnArticleRequestListener listener = getListener(count, offset, callback);
+            OnArticleRequestListener listener = getListener(count, offset);
             loadToCache(count + offset - databaseHelper.getCount(), listener);
         } else {
             List<Article> requestedArticles = databaseHelper.get(count, offset);
-            callback.onLoad(requestedArticles);
         }
     }
 
@@ -66,17 +63,14 @@ public class CacheManager {
      * Form listener with specified parameters
      * @param count count of articles required
      * @param offset offset in article list
-     * @param callback callback listener will fire when articles will be ready
      * @return created listener
      */
-    private static OnArticleRequestListener getListener(int count, int offset,
-                                                            final OnArticlesLoadListener callback) {
+    private static OnArticleRequestListener getListener(int count, int offset) {
         return new OnArticleRequestListener(count, offset) {
             @Override
             public void onLoad(List<Article> articles) {
                 databaseHelper.addAll(articles);
                 List<Article> requestedArticles = databaseHelper.get(getCount(), getOffset());
-                callback.onLoad(requestedArticles);
             }
         };
     }
