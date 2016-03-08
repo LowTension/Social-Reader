@@ -47,7 +47,8 @@ public class ArticleListPresenter implements Presenter<ArticleListView> {
         return new OnArticleRequestListener(request) {
             @Override
             public void onContentReady(Content content) {
-                view.showArticles(content.getArticles());
+                boolean isNew = getRequest().getOffset() < 0;
+                view.showArticles(content.getArticles(), isNew);
             }
 
             @Override

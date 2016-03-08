@@ -77,7 +77,8 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     }
 
     @Override
-    public void showArticles(List<Article> articles) {
+    public void showArticles(List<Article> articles, boolean isNew) {
+        loadingOld = isNew && loadingOld;
         for (Article article : articles) {
             adapter.add(article);
         }
