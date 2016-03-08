@@ -7,9 +7,18 @@ public abstract class OnArticleRequestListener {
     private int count;
     private int offset;
 
-    public OnArticleRequestListener(int count, int offset) {
-        this.count = count;
-        this.offset = offset;
+    private ArticleRequest request;
+
+    public OnArticleRequestListener(ArticleRequest request) {
+        this.request = request;
+    }
+
+    public abstract void onContentReady(Content content);
+
+    public abstract void onError(RequestError error);
+
+    public ArticleRequest getRequest() {
+        return request;
     }
 
     public int getCount() {

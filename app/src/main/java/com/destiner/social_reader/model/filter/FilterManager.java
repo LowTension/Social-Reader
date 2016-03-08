@@ -2,6 +2,7 @@ package com.destiner.social_reader.model.filter;
 
 import android.content.Context;
 
+import com.destiner.social_reader.model.structs.listeners.articles_load.Content;
 import com.destiner.social_reader.model.structs.listeners.articles_load.OnArticleRequestListener;
 import com.destiner.social_reader.model.structs.Article;
 import com.destiner.social_reader.model.structs.Post;
@@ -33,6 +34,9 @@ public class FilterManager {
         for (Post filteredPost : posts) {
             articles.add(new Article(filteredPost.getText()));
         }
+        // Fires callback
+        Content content = new Content(articles);
+        callback.onContentReady(content);
     }
 
     public static void setContext(Context c) {

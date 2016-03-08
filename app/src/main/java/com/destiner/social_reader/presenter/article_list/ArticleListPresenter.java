@@ -3,6 +3,10 @@ package com.destiner.social_reader.presenter.article_list;
 
 import com.destiner.social_reader.model.cache.CacheManager;
 import com.destiner.social_reader.model.structs.Article;
+import com.destiner.social_reader.model.structs.listeners.articles_load.ArticleRequest;
+import com.destiner.social_reader.model.structs.listeners.articles_load.Content;
+import com.destiner.social_reader.model.structs.listeners.articles_load.OnArticleRequestListener;
+import com.destiner.social_reader.model.structs.listeners.articles_load.RequestError;
 import com.destiner.social_reader.presenter.Presenter;
 import com.destiner.social_reader.view.article_list.ArticleListView;
 
@@ -17,7 +21,8 @@ public class ArticleListPresenter implements Presenter<ArticleListView> {
      * @param offset offset in article list
      */
     public void loadArticles(int count, int offset) {
-        CacheManager.getFromCache(count, offset);
+        ArticleRequest request = new ArticleRequest(count, offset);
+        CacheManager.getFromCache(getListener(request));
     }
 
     /**
@@ -36,5 +41,26 @@ public class ArticleListPresenter implements Presenter<ArticleListView> {
     @Override
     public void detachView() {
         this.view = null;
+    }
+
+    private OnArticleRequestListener getListener(ArticleRequest request) {
+        return new OnArticleRequestListener(request) {
+            @Override
+            public void onContentReady(Content content) {
+                view.showArticles(content.getArticles());
+            }
+
+            @Override
+            public void onError(RequestError error) {
+                switch (error.getCode()) {
+                    case NO_CONNECTION:
+                        // TODO notify View
+                        break;
+                    case NO_REPLY:
+                        // TODO notify View
+                        break;
+                }
+            }
+        };
     }
 }
