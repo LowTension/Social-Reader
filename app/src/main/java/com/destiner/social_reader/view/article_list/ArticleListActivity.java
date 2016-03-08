@@ -24,8 +24,12 @@ import java.util.List;
 public class ArticleListActivity extends AppCompatActivity implements ArticleListView {
     RecyclerView articleListRecyclerView;
     ArticleListAdapter adapter;
+    LinearLayoutManager layoutManager;
 
     ArticleListPresenter presenter;
+
+    private static final int oldArticles = 10;
+    private boolean loadingOld = false;
 
     final String[] scope = {VKScope.FRIENDS, VKScope.WALL};
 
@@ -37,10 +41,12 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
         setContentView(R.layout.activity_article_list);
 
         articleListRecyclerView = (RecyclerView) findViewById(R.id.article_list_recycler_view);
-        articleListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        layoutManager = new LinearLayoutManager(this);
+        articleListRecyclerView.setLayoutManager(layoutManager);
         adapter = new ArticleListAdapter(this, new ArrayList<Article>());
         articleListRecyclerView.setAdapter(adapter);
         articleListRecyclerView.addOnItemTouchListener(getSwipeableTouchListener());
+        articleListRecyclerView.addOnScrollListener(getOnScrollDownListener());
 
         presenter = new ArticleListPresenter();
         presenter.attachView(this);
@@ -129,6 +135,24 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
 
             @Override
             public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] positions) {
+            }
+        };
+    }
+
+    private RecyclerView.OnScrollListener getOnScrollDownListener() {
+        return new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                int index = layoutManager.findLastVisibleItemPosition();
+                if (index > adapter.getItemCount() - 3 && !loadingOld) {
+                    loadingOld = true;
+                    presenter.loadArticles(oldArticles, adapter.getItemCount());
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
             }
         };
     }
