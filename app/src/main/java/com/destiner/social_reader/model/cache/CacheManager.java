@@ -39,11 +39,26 @@ public class CacheManager {
     public static void getFromCache(OnArticleRequestListener callback) {
         int count = callback.getRequest().getCount();
         int offset = callback.getRequest().getOffset();
-        if (databaseHelper.getCount() < count + offset) {
-            OnArticleRequestListener listener = getListener(callback);
-            loadToCache(count + offset - databaseHelper.getCount(), listener);
+        int size = databaseHelper.getCount();
+        if (offset < 0) {
+            if (last + count < size) {
+                // New articles have been already loaded
+                getOldArticles(callback);
+            } else {
+                // Load new articles
+                getNewArticles(callback, count, offset);
+            }
+        } else if (offset == 0) {
+            if (count < size) {
+                // Database has enough articles; return them
+                getOldArticles(callback);
+            } else {
+                // Load new articles to the database
+                getNewArticles(callback, count, offset);
+            }
         } else {
-            List<Article> requestedArticles = databaseHelper.get(count, offset);
+            // Positive offset means try to get existing items anyway
+            getOldArticles(callback);
         }
     }
 
@@ -59,6 +74,16 @@ public class CacheManager {
     public static void deleteArticle(Article article) {
         last--;
         databaseHelper.delete(article);
+    }
+
+    private static void getNewArticles(OnArticleRequestListener callback, int count, int offset) {
+        OnArticleRequestListener listener = getListener(callback);
+        loadToCache(count + offset - databaseHelper.getCount(), listener);
+    }
+
+    private static void getOldArticles(OnArticleRequestListener callback) {
+        List<Article> requestedArticles = getArticles(callback.getRequest());
+        callback.onContentReady(new Content(requestedArticles));
     }
 
     /**
