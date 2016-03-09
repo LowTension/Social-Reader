@@ -51,6 +51,11 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         notifyItemInserted(dataSet.size() - 1);
     }
 
+    public void add(Article article, int position) {
+        dataSet.add(position, article);
+        notifyItemInserted(position);
+    }
+
     /**
      * Removes element from list.
      * @param position position of element
