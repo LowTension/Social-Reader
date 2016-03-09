@@ -3,6 +3,7 @@ package com.destiner.social_reader.view.article_list;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleListActivity extends AppCompatActivity implements ArticleListView {
+    SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView articleListRecyclerView;
     ArticleListAdapter adapter;
     LinearLayoutManager layoutManager;
@@ -29,7 +31,9 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     ArticleListPresenter presenter;
 
     private static final int oldArticles = 10;
+    private static final int newArticles = 5;
     private boolean loadingOld = false;
+    private boolean loadingNew = false;
 
     final String[] scope = {VKScope.FRIENDS, VKScope.WALL};
 
@@ -72,9 +76,20 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
 
     @Override
     public void showArticles(List<Article> articles, boolean isNew) {
-        loadingOld = isNew && loadingOld;
-        for (Article article : articles) {
-            adapter.add(article);
+        if (isNew) {
+            // Showing new articles
+            for (Article article : articles) {
+                adapter.add(article, 0);
+            }
+            loadingNew = false;
+            // Update UI
+            swipeRefreshLayout.setRefreshing(false);
+        } else {
+            // Showing old articles
+            for (Article article : articles) {
+                adapter.add(article);
+            }
+            loadingOld = false;
         }
     }
 
@@ -86,7 +101,13 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     }
 
     private void setUI() {
+        setRefreshLayout();
         setRecyclerView();
+    }
+
+    private void setRefreshLayout() {
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.article_list_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(getRefreshListener());
     }
 
     private void setRecyclerView() {
@@ -144,6 +165,18 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
 
             @Override
             public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] positions) {
+            }
+        };
+    }
+
+    private SwipeRefreshLayout.OnRefreshListener getRefreshListener() {
+        return new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (!loadingNew) {
+                    loadingNew = true;
+                    presenter.loadArticles(newArticles, -newArticles);
+                }
             }
         };
     }
