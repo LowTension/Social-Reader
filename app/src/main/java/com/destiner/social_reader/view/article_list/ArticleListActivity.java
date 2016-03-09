@@ -40,7 +40,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_list);
 
-        setRecyclerView();
+        setUI();
 
         presenter = new ArticleListPresenter();
         presenter.attachView(this);
@@ -83,6 +83,10 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, loginCallback)) {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private void setUI() {
+        setRecyclerView();
     }
 
     private void setRecyclerView() {
