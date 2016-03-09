@@ -40,13 +40,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_list);
 
-        articleListRecyclerView = (RecyclerView) findViewById(R.id.article_list_recycler_view);
-        layoutManager = new LinearLayoutManager(this);
-        articleListRecyclerView.setLayoutManager(layoutManager);
-        adapter = new ArticleListAdapter(this, new ArrayList<Article>());
-        articleListRecyclerView.setAdapter(adapter);
-        articleListRecyclerView.addOnItemTouchListener(getSwipeableTouchListener());
-        articleListRecyclerView.addOnScrollListener(getOnScrollDownListener());
+        setRecyclerView();
 
         presenter = new ArticleListPresenter();
         presenter.attachView(this);
@@ -89,6 +83,16 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, loginCallback)) {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private void setRecyclerView() {
+        articleListRecyclerView = (RecyclerView) findViewById(R.id.article_list_recycler_view);
+        layoutManager = new LinearLayoutManager(this);
+        articleListRecyclerView.setLayoutManager(layoutManager);
+        adapter = new ArticleListAdapter(this, new ArrayList<Article>());
+        articleListRecyclerView.setAdapter(adapter);
+        articleListRecyclerView.addOnItemTouchListener(getSwipeableTouchListener());
+        articleListRecyclerView.addOnScrollListener(getOnScrollDownListener());
     }
 
     private VKCallback<VKAccessToken> loginCallback = new VKCallback<VKAccessToken>() {
