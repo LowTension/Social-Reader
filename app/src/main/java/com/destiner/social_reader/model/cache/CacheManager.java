@@ -1,6 +1,7 @@
 package com.destiner.social_reader.model.cache;
 
 import android.content.Context;
+import android.os.AsyncTask;
 
 import com.destiner.social_reader.model.explorer.Explorer;
 import com.destiner.social_reader.model.structs.Article;
@@ -44,6 +45,11 @@ public class CacheManager {
             if (last + count < size) {
                 // New articles have been already loaded
                 getOldArticles(callback);
+                // If there are too little new posts available in cache
+                if (size - last < PostLoadTask.AVAILABLE_POSTS) {
+                    PostLoadTask task = new PostLoadTask();
+                    task.doInBackground(null);
+                }
             } else {
                 // Load new articles
                 getNewArticles(callback, count, offset);
@@ -149,5 +155,45 @@ public class CacheManager {
         Collections.reverse(articles);
         last = Math.max(last, bounds.getUpper());
         return articles;
+    }
+
+    /**
+     * AsyncTask that loads new posts in background. As the content fully downloaded from server,
+     * stores it in SQLite database to retrieve later.
+     */
+    private static class PostLoadTask extends AsyncTask {
+        private static final int AVAILABLE_POSTS = 20;
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            CacheManager.loadToCache(20, getCallback());
+            return null;
+        }
+
+        private OnArticleRequestListener getCallback() {
+            ArticleRequest request = new ArticleRequest(20, -20);
+            return new OnArticleRequestListener(request) {
+                @Override
+                public void onContentReady(Content content) {
+                    List<Article> articles = content.getArticles();
+                    databaseHelper.addAll(articles);
+                    // We should delay our requests to not exceed limit of API method calls
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    // If what's loaded is not enough
+                    if (databaseHelper.getCount() - last < AVAILABLE_POSTS) {
+                        // Load more
+                        CacheManager.loadToCache(AVAILABLE_POSTS, getCallback());
+                    }
+                }
+
+                @Override
+                public void onError(RequestError error) {
+                }
+            };
+        }
     }
 }
