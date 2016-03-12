@@ -10,8 +10,6 @@ import com.destiner.social_reader.model.structs.listeners.articles_load.RequestE
 import com.destiner.social_reader.presenter.Presenter;
 import com.destiner.social_reader.view.article_list.ArticleListView;
 
-import java.util.List;
-
 public class ArticleListPresenter implements Presenter<ArticleListView> {
     private ArticleListView view;
 
