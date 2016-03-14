@@ -3,6 +3,7 @@ package com.destiner.social_reader.view.article_list;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -103,6 +104,8 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     public void notifyNoConnection() {
         loadingNew = false;
         swipeRefreshLayout.setRefreshing(false);
+        Snackbar.make(articleListRecyclerView, "No connection", Snackbar.LENGTH_SHORT)
+                .show();
     }
 
     @Override
