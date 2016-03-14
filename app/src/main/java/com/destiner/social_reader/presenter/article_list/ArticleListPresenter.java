@@ -53,7 +53,7 @@ public class ArticleListPresenter implements Presenter<ArticleListView> {
             public void onError(RequestError error) {
                 switch (error.getCode()) {
                     case NO_CONNECTION:
-                        // TODO notify View
+                        view.notifyNoConnection();
                         break;
                     case NO_REPLY:
                         // TODO notify View
