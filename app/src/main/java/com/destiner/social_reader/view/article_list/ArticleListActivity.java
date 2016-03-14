@@ -100,6 +100,12 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     }
 
     @Override
+    public void notifyNoConnection() {
+        loadingNew = false;
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, loginCallback)) {
             super.onActivityResult(requestCode, resultCode, data);

@@ -8,4 +8,5 @@ import java.util.List;
 public interface ArticleListView extends View {
     void showArticle(Article article);
     void showArticles(List<Article> articles, boolean isNew);
+    void notifyNoConnection();
 }
