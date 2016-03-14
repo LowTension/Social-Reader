@@ -6,6 +6,7 @@ import com.destiner.social_reader.R;
 import com.destiner.social_reader.model.filter.FilterManager;
 import com.destiner.social_reader.model.structs.Post;
 import com.destiner.social_reader.model.structs.listeners.articles_load.OnArticleRequestListener;
+import com.destiner.social_reader.model.structs.listeners.articles_load.RequestError;
 import com.destiner.social_reader.model.structs.source.GroupSource;
 import com.destiner.social_reader.model.structs.source.Source;
 import com.vk.sdk.api.VKParameters;
@@ -131,13 +132,19 @@ public class SourceManager {
      * @return created instance
      */
     private static OnPostsLoadListener buildListener(Set<? extends Source> sources,
-                                                     OnArticleRequestListener callback) {
+                                                     final OnArticleRequestListener callback) {
         return new OnPostsLoadListener(sources, callback) {
             @Override
             public void onPostsLoad(List<Post> posts, DateTime earliestPostDate) {
                 Set<? extends Source> sourceSet = getSources();
                 updateSources(sourceSet, earliestPostDate);
                 FilterManager.filter(posts, this);
+            }
+
+            @Override
+            public void onErrorOccur(int errorCode) {
+                RequestError error = RequestError.getError(errorCode);
+                callback.onError(error);
             }
         };
     }

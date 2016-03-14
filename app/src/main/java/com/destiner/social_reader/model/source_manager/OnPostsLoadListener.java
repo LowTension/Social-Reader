@@ -34,6 +34,8 @@ public abstract class OnPostsLoadListener extends OnArticleRequestListener {
 
     public abstract void onPostsLoad(List<Post> posts, DateTime earliestPostDate);
 
+    public abstract void onErrorOccur(int errorCode);
+
     public Set<? extends Source> getSources() {
         return sources;
     }

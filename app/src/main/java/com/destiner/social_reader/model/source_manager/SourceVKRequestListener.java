@@ -68,6 +68,7 @@ public class SourceVKRequestListener extends VKRequest.VKRequestListener {
 
     @Override
     public void onError(VKError error) {
-        Log.i(TAG, error.toString());
+        Log.i(TAG, Integer.toString(error.errorCode));
+        listener.onErrorOccur(error.errorCode);
     }
 }
