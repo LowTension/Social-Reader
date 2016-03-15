@@ -6,6 +6,7 @@ import com.destiner.social_reader.model.structs.listeners.articles_load.Content;
 import com.destiner.social_reader.model.structs.listeners.articles_load.OnArticleRequestListener;
 import com.destiner.social_reader.model.structs.Article;
 import com.destiner.social_reader.model.structs.Post;
+import com.destiner.social_reader.model.styler.StyleManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +35,7 @@ public class FilterManager {
         for (Post filteredPost : posts) {
             articles.add(new Article(filteredPost.getText()));
         }
-        // Fires callback
-        Content content = new Content(articles);
-        callback.onContentReady(content);
+        StyleManager.style(articles, callback);
     }
 
     public static void setContext(Context c) {
