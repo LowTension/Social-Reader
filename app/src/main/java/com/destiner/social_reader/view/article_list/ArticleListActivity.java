@@ -85,9 +85,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     public void showArticles(List<Article> articles, boolean isNew) {
         if (isNew) {
             // Showing new articles
-            for (Article article : articles) {
-                adapter.add(article, 0);
-            }
+            adapter.addToStart(articles);
             loadingNew = false;
             // Update UI
             swipeRefreshLayout.setRefreshing(false);
