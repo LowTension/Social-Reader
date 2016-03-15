@@ -1,6 +1,7 @@
 package com.destiner.social_reader.model.cache;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
 import com.destiner.social_reader.model.explorer.Explorer;
@@ -24,6 +25,10 @@ public class CacheManager {
 
     private static ArticleOpenHelper databaseHelper;
 
+    private static SharedPreferences preferences;
+    // Name of SharedPreferences that store information to support the CacheManager
+    private static final String PREFERENCES_NAME = "cache_info";
+    private static final String PREFERENCES_KEY_LAST = "last";
     private static int last = -1;
 
     /**
@@ -71,6 +76,8 @@ public class CacheManager {
     public static void setContext(Context c) {
         context = c;
         databaseHelper = new ArticleOpenHelper(context);
+        preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
+        last = preferences.getInt(PREFERENCES_KEY_LAST, -1);
     }
 
     /**
@@ -79,6 +86,7 @@ public class CacheManager {
      */
     public static void deleteArticle(Article article) {
         last--;
+        preferences.edit().putInt(PREFERENCES_KEY_LAST, last).apply();
         databaseHelper.delete(article);
     }
 
@@ -154,6 +162,7 @@ public class CacheManager {
         List<Article> articles = databaseHelper.get(count, offset);
         Collections.reverse(articles);
         last = Math.max(last, bounds.getUpper());
+        preferences.edit().putInt(PREFERENCES_KEY_LAST, last).apply();
         return articles;
     }
 
