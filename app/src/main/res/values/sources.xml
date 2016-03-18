@@ -80,4 +80,9 @@
         <item>38310026</item>
         <item>37575179</item>
     </integer-array>
+
+    <string-array name="query_sources">
+        <item>статья</item>
+        <item>публикация</item>
+    </string-array>
 </resources>

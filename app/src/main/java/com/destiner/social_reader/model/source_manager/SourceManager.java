@@ -8,6 +8,7 @@ import com.destiner.social_reader.model.structs.Post;
 import com.destiner.social_reader.model.structs.listeners.articles_load.OnArticleRequestListener;
 import com.destiner.social_reader.model.structs.listeners.articles_load.RequestError;
 import com.destiner.social_reader.model.structs.source.GroupSource;
+import com.destiner.social_reader.model.structs.source.QuerySource;
 import com.destiner.social_reader.model.structs.source.Source;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
@@ -48,6 +49,20 @@ public class SourceManager {
         requestPosts(groupSourceIds, startTime, endTime, listener);
     }
 
+    /**
+     * Loads new (ones which was not get before) posts from query sources
+     * @param callback callback listener that should be fired when posts retrieval is complete.
+     */
+    public static void getQueryPosts(OnArticleRequestListener callback) {
+        Set<QuerySource> querySources = getQuerySources();
+        Set<String> queries = getQueries(querySources);
+        String query = queries.iterator().next();
+        DateTime endTime = getEarliestPostDate(querySources);
+        DateTime startTime = new DateTime(0);
+        OnPostsLoadListener listener = buildListener(querySources, callback);
+        requestPosts(query, startTime, endTime, listener);
+    }
+
     private static void addSourcesFromResources() {
         if (context == null) {
             return;
@@ -56,6 +71,11 @@ public class SourceManager {
         int[] groupIds = context.getResources().getIntArray(R.array.group_sources);
         for (Integer groupId : groupIds) {
             sources.add(new GroupSource(groupId));
+        }
+
+        String[] queries = context.getResources().getStringArray(R.array.query_sources);
+        for (String query : queries) {
+            sources.add(new QuerySource(query));
         }
     }
 
@@ -71,6 +91,20 @@ public class SourceManager {
             }
         }
         return groupSources;
+    }
+
+    /**
+     * Returns query sources as set
+     * @return query sources
+     */
+    private static Set<QuerySource> getQuerySources() {
+        Set<QuerySource> querySources = new HashSet<>();
+        for (Source source : sources) {
+            if (source instanceof QuerySource) {
+                querySources.add((QuerySource) source);
+            }
+        }
+        return querySources;
     }
 
     /**
@@ -105,6 +139,19 @@ public class SourceManager {
     }
 
     /**
+     * Extracts query source queries to the set
+     * @param querySources query sources
+     * @return set of queries
+     */
+    private static Set<String> getQueries(Set<QuerySource> querySources) {
+        Set<String> queries = new HashSet<>();
+        for (QuerySource source : querySources) {
+            queries.add(source.getQuery());
+        }
+        return queries;
+    }
+
+    /**
      * Requests posts from API with given parameters
      * @param sourceIds set of source ids
      * @param startTime first time when posts could be created
@@ -122,6 +169,25 @@ public class SourceManager {
                 "end_time", endTime.getMillis() / 1000
                 );
         VKRequest request = new VKRequest("newsfeed.get", parameters);
+        request.executeWithListener(new SourceVKRequestListener(callback));
+    }
+
+    /**
+     * Requests posts from API with given parameters
+     * @param query set of source queries
+     * @param startTime first time when posts could be created
+     * @param endTime last time when posts could be created
+     * @param callback callback listener that will fire when request will complete
+     */
+    private static void requestPosts(String query, DateTime startTime, DateTime endTime,
+                                     OnPostsLoadListener callback) {
+        VKParameters parameters = VKParameters.from(
+                "q", query,
+                "count", 200,
+                "start_time", startTime.getMillis() / 1000,
+                "end_time", endTime.getMillis() / 1000
+        );
+        VKRequest request = new VKRequest("newsfeed.search", parameters);
         request.executeWithListener(new SourceVKRequestListener(callback));
     }
 
