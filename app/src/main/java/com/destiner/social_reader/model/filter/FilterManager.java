@@ -47,5 +47,6 @@ public class FilterManager {
         filters.add(new LengthFilter());
         filters.add(new FilthFilter(context));
         filters.add(new InnerLinksFilter());
+        filters.add(new UrlFilter());
     }
 }
