@@ -64,7 +64,7 @@ public class SourceDBOpenHelper extends SQLiteOpenHelper {
     public long getDate(Source source) {
         SQLiteDatabase db = getReadableDatabase();
         String queryText =
-                String.format("SELECT %s FROM %s WHERE %s=%s;",
+                String.format("SELECT %s FROM %s WHERE %s=\"%s\";",
                         KEY_DATE,
                         TABLE_NAME,
                         KEY_ID,
