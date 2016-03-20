@@ -31,6 +31,8 @@ public class CacheManager {
     private static final String PREFERENCES_KEY_LAST = "last";
     private static int last = -1;
 
+    private static final int AVAILABLE_POSTS = 20;
+
     /**
      * Private constructor to forbid class instantiation
      */
@@ -51,9 +53,9 @@ public class CacheManager {
                 // New articles have been already loaded
                 getOldArticles(callback);
                 // If there are too little new posts available in cache
-                if (size - last < PostLoadTask.AVAILABLE_POSTS) {
-                    PostLoadTask task = new PostLoadTask();
-                    task.doInBackground(null);
+                if (size - last < AVAILABLE_POSTS) {
+                    int newPostCount = 20;
+                    loadToCache(newPostCount, getSilentListener());
                 }
             } else {
                 // Load new articles
@@ -120,6 +122,20 @@ public class CacheManager {
             @Override
             public void onError(RequestError error) {
                 callback.onError(error);
+            }
+        };
+    }
+
+    private static OnArticleRequestListener getSilentListener() {
+        return new OnArticleRequestListener(null) {
+            @Override
+            public void onContentReady(Content content) {
+                List<Article> articles = content.getArticles();
+                databaseHelper.addAll(articles);
+            }
+
+            @Override
+            public void onError(RequestError error) {
             }
         };
     }
