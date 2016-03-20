@@ -173,6 +173,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
                     presenter.deleteArticle(article);
                     // Delete article from RecyclerView
                     adapter.remove(position);
+                    DeleteArticleSnackbar.update(recyclerView);
                 }
             }
 
