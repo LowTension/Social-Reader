@@ -2,6 +2,7 @@ package com.destiner.social_reader.view.article;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.destiner.social_reader.R;
@@ -29,9 +30,15 @@ public class ArticleActivity extends AppCompatActivity {
     }
 
     private void setUI() {
+        setToolbar();
         if (post == null) {
             return;
         }
         articleTextView.setText(post.getText());
+    }
+
+    private void setToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 }
