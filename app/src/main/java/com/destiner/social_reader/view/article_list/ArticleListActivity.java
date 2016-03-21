@@ -1,8 +1,11 @@
 package com.destiner.social_reader.view.article_list;
 
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.destiner.social_reader.R;
 
@@ -17,6 +20,7 @@ public class ArticleListActivity extends AppCompatActivity {
 
     private void setUI() {
         setToolbar();
+        setNavigationDrawer();
     }
 
     private void setToolbar() {
@@ -24,4 +28,19 @@ public class ArticleListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
+    private void setNavigationDrawer() {
+        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                drawerLayout.closeDrawers();
+                menuItem.setChecked(true);
+                switch (menuItem.getItemId()) {
+                    // TODO make item select handling
+                }
+                return true;
+            }
+        });
+    }
 }
