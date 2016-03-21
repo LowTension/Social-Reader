@@ -5,11 +5,17 @@
     android:layout_height="match_parent"
     tools:context="com.destiner.social_reader.view.article_list.ArticleListActivity">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        />
+
     <fragment
         android:name="com.destiner.social_reader.view.fragments.ArticleListFragment"
         android:id="@+id/article_list_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
         />
 
 </RelativeLayout>
