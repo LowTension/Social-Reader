@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_feed"
+            android:title="Feed" />
+        <item
+            android:id="@+id/nav_archive"
+            android:title="Archive" />
+
+        <item
+            android:id="@+id/nav_account"
+            android:title="[VK] Name" />
+
+        <item
+            android:id="@+id/nav_settings"
+            android:title="Settings" />
+
+        <item
+            android:id="@+id/nav_feedback"
+            android:title="Feedback" />
+    </group>
+
+</menu>
