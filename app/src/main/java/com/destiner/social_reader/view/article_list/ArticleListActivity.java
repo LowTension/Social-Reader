@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.destiner.social_reader.R;
+import com.destiner.social_reader.view.fragments.ArticleArchiveFragment;
 import com.destiner.social_reader.view.fragments.ArticleListFragment;
 
 public class ArticleListActivity extends AppCompatActivity {
@@ -40,7 +41,12 @@ public class ArticleListActivity extends AppCompatActivity {
                 drawerLayout.closeDrawers();
                 menuItem.setChecked(true);
                 switch (menuItem.getItemId()) {
-                    // TODO make item select handling
+                    case R.id.nav_feed:
+                        setArticleListFragment();
+                        break;
+                    case R.id.nav_archive:
+                        setArticleArchiveFragment();
+                        break;
                 }
                 return true;
             }
@@ -51,6 +57,22 @@ public class ArticleListActivity extends AppCompatActivity {
         ArticleListFragment listFragment = new ArticleListFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.article_list_fragment_container, listFragment);
+        transaction.commit();
+    }
+
+    private void setArticleListFragment() {
+        ArticleListFragment listFragment = new ArticleListFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.article_list_fragment_container, listFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void setArticleArchiveFragment() {
+        ArticleArchiveFragment archiveFragment = new ArticleArchiveFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.article_list_fragment_container, archiveFragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 }
