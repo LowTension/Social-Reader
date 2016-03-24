@@ -128,6 +128,7 @@ public class ArticleListFragment extends Fragment implements ArticleListView {
     private void setRefreshLayout() {
         swipeRefreshLayout = (SwipeRefreshLayout)
                 fragmentView.findViewById(R.id.article_list_refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         swipeRefreshLayout.setOnRefreshListener(getRefreshListener());
     }
 
