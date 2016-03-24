@@ -1,5 +1,6 @@
 package com.destiner.social_reader.view.article_list;
 
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -8,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.destiner.social_reader.R;
+import com.destiner.social_reader.view.fragments.ArticleListFragment;
 
 public class ArticleListActivity extends AppCompatActivity {
     @Override
@@ -21,6 +23,7 @@ public class ArticleListActivity extends AppCompatActivity {
     private void setUI() {
         setToolbar();
         setNavigationDrawer();
+        setFragment();
     }
 
     private void setToolbar() {
@@ -42,5 +45,12 @@ public class ArticleListActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    private void setFragment() {
+        ArticleListFragment listFragment = new ArticleListFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.article_list_fragment_container, listFragment);
+        transaction.commit();
     }
 }

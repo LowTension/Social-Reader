@@ -20,9 +20,8 @@
             layout="@layout/toolbar"
             />
 
-        <fragment
-            android:name="com.destiner.social_reader.view.fragments.ArticleListFragment"
-            android:id="@+id/article_list_fragment"
+        <FrameLayout
+            android:id="@+id/article_list_fragment_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar"
