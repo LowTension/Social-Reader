@@ -15,7 +15,7 @@ import java.util.List;
  * Adapter for article list
  */
 public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.ViewHolder> {
-    private ArticleListView view;
+    private ArticleViewer viewer;
 
     private List<Article> dataSet;
 
@@ -33,12 +33,12 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
         @Override
         public void onClick(View v) {
-            view.showArticle(dataSet.get(getAdapterPosition()));
+            viewer.showArticle(dataSet.get(getAdapterPosition()));
         }
     }
 
-    public ArticleListAdapter(ArticleListView view, List<Article> articles) {
-        this.view = view;
+    public ArticleListAdapter(ArticleViewer viewer, List<Article> articles) {
+        this.viewer = viewer;
         dataSet = articles;
     }
 
