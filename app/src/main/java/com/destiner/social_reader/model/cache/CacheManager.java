@@ -36,8 +36,18 @@ public class CacheManager {
         ArticleCache.get(callback);
     }
 
+    public static List<Article> getArchivedArticles(ArticleRequest request) {
+        return ArchiveCache.get(request);
+    }
+
     public static void setContext(Context c) {
         ArticleCache.initialize(c);
+        ArchiveCache.initialize(c);
+    }
+
+    public static void archiveArticle(Article article) {
+        ArticleCache.delete(article);
+        ArchiveCache.add(article);
     }
 
     /**
@@ -46,5 +56,9 @@ public class CacheManager {
      */
     public static void deleteArticle(Article article) {
         ArticleCache.delete(article);
+    }
+
+    public static void deleteArchivedArticle(Article article) {
+        ArchiveCache.delete(article);
     }
 }
