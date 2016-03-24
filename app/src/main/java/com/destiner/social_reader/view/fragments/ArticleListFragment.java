@@ -154,7 +154,7 @@ public class ArticleListFragment extends Fragment implements ArticleListView {
 
             @Override
             public boolean canSwipeRight(int position) {
-                return false;
+                return true;
             }
 
             @Override
@@ -171,6 +171,13 @@ public class ArticleListFragment extends Fragment implements ArticleListView {
 
             @Override
             public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] positions) {
+                for (int position : positions) {
+                    Article article = adapter.get(position);
+                    // Delete article from storage
+                    presenter.archiveArticle(article);
+                    // Delete article from RecyclerView
+                    adapter.remove(position);
+                }
             }
         };
     }

@@ -31,6 +31,10 @@ public class ArticleListPresenter implements Presenter<ArticleListView> {
         CacheManager.deleteArticle(article);
     }
 
+    public void archiveArticle(Article article) {
+        CacheManager.archiveArticle(article);
+    }
+
     @Override
     public void attachView(ArticleListView view) {
         this.view = view;
