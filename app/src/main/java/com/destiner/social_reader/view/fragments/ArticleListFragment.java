@@ -16,6 +16,7 @@ import com.destiner.social_reader.R;
 import com.destiner.social_reader.model.structs.Article;
 import com.destiner.social_reader.presenter.article_list.ArticleListPresenter;
 import com.destiner.social_reader.view.article.ArticleActivity;
+import com.destiner.social_reader.view.article_list.ArchiveArticleSnackbar;
 import com.destiner.social_reader.view.article_list.ArticleListAdapter;
 import com.destiner.social_reader.view.article_list.ArticleListView;
 import com.destiner.social_reader.view.article_list.DeleteArticleSnackbar;
@@ -177,6 +178,7 @@ public class ArticleListFragment extends Fragment implements ArticleListView {
                     presenter.archiveArticle(article);
                     // Delete article from RecyclerView
                     adapter.remove(position);
+                    ArchiveArticleSnackbar.update(recyclerView);
                 }
             }
         };
