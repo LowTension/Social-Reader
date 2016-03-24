@@ -14,4 +14,9 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
+    <style name="NavigationDrawer" parent="AppTheme">
+        <!-- Set transparent color to activity that has NavigationDrawer -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
 </resources>
