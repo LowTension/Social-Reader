@@ -12,7 +12,6 @@
 
         <!-- Transparent status bar to match Google Design Guidelines -->
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
 </resources>
