@@ -49,12 +49,18 @@ public class ArticleListPresenter implements Presenter<ArticleListView> {
         return new OnArticleRequestListener(request) {
             @Override
             public void onContentReady(Content content) {
+                if (view == null) {
+                    return;
+                }
                 boolean isNew = getRequest().getOffset() < 0;
                 view.showArticles(content.getArticles(), isNew);
             }
 
             @Override
             public void onError(RequestError error) {
+                if (view == null) {
+                    return;
+                }
                 switch (error.getCode()) {
                     case NO_CONNECTION:
                         view.notifyNoConnection();
